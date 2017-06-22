@@ -1,2 +1,2 @@
-r/soccer How Long Until Messi & Ronaldo Bot
-===========================================
+How Long Until Messi & Ronaldo? r/soccer Bot
+============================================
