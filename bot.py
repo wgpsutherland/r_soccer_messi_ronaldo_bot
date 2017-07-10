@@ -1,6 +1,10 @@
 from datetime import datetime
 import praw
 
+def build_comment_url_from_comment(comment):
+    return 'https://www.reddit.com/comments/' + comment.link_id.replace('t3_', '') + '/_/' + comment.id
+
+
 def days_hours_minutes_seconds(td):
     return td.days, td.seconds // 3600, (td.seconds // 60) % 60, td.seconds % 60
 
@@ -26,8 +30,8 @@ def format_time_string(time):
     return string
 
 
-def build_reddit_comment(thread_subject, comment_subject, time):
-    comment = 'In this thread about ' + thread_subject + ', it took ' + format_time_string(time) + ' for someone to mention ' + comment_subject
+def build_reddit_comment(thread_subject, comment_subject, time, comment_object):
+    comment = 'In this thread about ' + thread_subject + ', it took ' + format_time_string(time) + ' for someone to mention ' + comment_subject + ', in this comment [here](' + build_comment_url_from_comment(comment_object) + ').'
     return comment
 
 
@@ -53,9 +57,9 @@ def do_bot_stuff(comment, bot, comment_subject):
             time_difference_parsed = days_hours_minutes_seconds(time_difference)
 
             if comment_subject == 'messi':
-                built_comment = build_reddit_comment('Cristiano Ronaldo', 'Lionel Messi', time_difference_parsed)
+                built_comment = build_reddit_comment('Cristiano Ronaldo', 'Lionel Messi', time_difference_parsed, x)
             elif comment_subject == 'ronaldo':
-                built_comment = build_reddit_comment('Lionel Messi', 'Cristiano Ronaldo', time_difference_parsed)
+                built_comment = build_reddit_comment('Lionel Messi', 'Cristiano Ronaldo', time_difference_parsed, x)
 
             bot.submission(submission.id).reply(built_comment)
 
