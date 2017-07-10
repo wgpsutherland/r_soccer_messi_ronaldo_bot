@@ -31,7 +31,8 @@ def format_time_string(time):
 
 
 def build_reddit_comment(thread_subject, comment_subject, time, comment_object):
-    comment = 'In this thread about ' + thread_subject + ', it took ' + format_time_string(time) + ' for someone to mention ' + comment_subject + ', in this comment [here](' + build_comment_url_from_comment(comment_object) + ').'
+    comment = 'In this thread about ' + thread_subject + ', it took ' + format_time_string(time) + ' for someone to mention ' + comment_subject + ', in this comment [here](' + build_comment_url_from_comment(comment_object) + '). '
+    comment += 'I\'m a bot, see my code and report any issues [here](https://github.com/wgpsutherland/r_soccer_messi_ronaldo_bot).'
     return comment
 
 
