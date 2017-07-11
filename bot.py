@@ -46,6 +46,7 @@ def do_bot_stuff(comment, bot, comment_subject):
     submission.comment_sort = 'old'
     submission.comments.replace_more(limit=None, threshold=0)
     comments = submission.comments.list()
+    comments.sort(key=lambda x: x.created_utc)  # only top level comments are sorted by date using 'old', this sorts ALL comments by date
 
     for x in comments:
 
