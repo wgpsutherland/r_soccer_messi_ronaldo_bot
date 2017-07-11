@@ -85,13 +85,16 @@ for comment in subreddit.stream.comments():
     if 'ronaldo' in title and 'messi' in title:
         continue
 
-    if ('ronaldo' in title and 'messi' in body) or ('messi' in title and 'ronaldo' in body):
+    r_t_m_b = 'ronaldo' in title and 'messi' in body
+    m_t_r_b = 'messi' in title and 'ronaldo' in body
+
+    if r_t_m_b or m_t_r_b:
         examined_submissions = set(open("commented.txt").read().splitlines())
         if comment.link_id in examined_submissions:
             continue
 
-    if 'ronaldo' in title and 'messi' in body:
+    if r_t_m_b:
         do_bot_stuff(comment, r_messi, 'messi')
 
-    if 'messi' in title and 'ronaldo' in body:
+    if m_t_r_b:
         do_bot_stuff(comment, r_ronaldo, 'ronaldo')
