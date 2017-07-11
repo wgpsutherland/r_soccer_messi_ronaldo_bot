@@ -31,8 +31,9 @@ def format_time_string(time):
 
 
 def build_reddit_comment(thread_subject, comment_subject, time, comment_object):
-    comment = 'In this thread about ' + thread_subject + ', it took ' + format_time_string(time) + ' for someone to mention ' + comment_subject + ', in this comment [here](' + build_comment_url_from_comment(comment_object) + '). '
-    comment += 'I\'m a bot, see my code and report any issues [here](https://github.com/wgpsutherland/r_soccer_messi_ronaldo_bot).'
+    comment = 'Congratulations! It only took ' + format_time_string(time) + ' for you to be the first to bring up ' + comment_subject + ' in this post about ' + thread_subject + '. '
+    # comment = 'In this thread about ' + thread_subject + ', it took ' + format_time_string(time) + ' for someone to mention ' + comment_subject + ', in this comment [here](' + build_comment_url_from_comment(comment_object) + '). '
+    comment += 'I\'m a bot, see my code and report issues [here](https://github.com/wgpsutherland/r_soccer_messi_ronaldo_bot).'
     return comment
 
 
@@ -62,7 +63,8 @@ def do_bot_stuff(comment, bot, comment_subject):
             elif comment_subject == 'ronaldo':
                 built_comment = build_reddit_comment('Lionel Messi', 'Cristiano Ronaldo', time_difference_parsed, x)
 
-            bot.submission(submission.id).reply(built_comment)
+            #bot.submission(submission.id).reply(built_comment)  # make a new comment on a post
+            bot.comment(x.id).reply(built_comment)  # reply to the comment
 
             print 'BOT:', built_comment, '\n'
             
