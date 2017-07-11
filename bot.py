@@ -74,7 +74,7 @@ def do_bot_stuff(comment, bot, comment_subject):
 r_messi = praw.Reddit('messiBot')
 r_ronaldo = praw.Reddit('ronaldoBot')
 
-subreddit = r_messi.subreddit('testingground4bots')
+subreddit = r_messi.subreddit('soccer')
 
 for comment in subreddit.stream.comments():
 
