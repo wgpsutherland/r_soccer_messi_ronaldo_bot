@@ -14,3 +14,7 @@ What People Have to Say About the Bot
 "Easily top 5 bot on reddit" - u/Family_Guy_Ostrich
 
 "Hahahah ffs" - u/PathsOfKubrick_pt
+
+"this bot's going to end up pissing someone off soon enough and it'll get banned, guarantee it" - u/Shertqb
+
+"good boy" - u/Pidjesus

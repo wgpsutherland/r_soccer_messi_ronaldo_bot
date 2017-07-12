@@ -39,9 +39,6 @@ def build_reddit_comment(thread_subject, comment_subject, time, comment_object):
 
 def do_bot_stuff(comment, bot, comment_subject):
 
-    print 'TITLE:', comment.link_title
-    print 'COMMENT:', comment.body
-
     submission = comment.submission
     submission.comment_sort = 'old'
     submission.comments.replace_more(limit=None, threshold=0)
@@ -67,6 +64,8 @@ def do_bot_stuff(comment, bot, comment_subject):
             #bot.submission(submission.id).reply(built_comment)  # make a new comment on a post
             bot.comment(x.id).reply(built_comment)  # reply to the comment
 
+            print 'TITLE:', comment.link_title
+            print 'COMMENT:', comment.body
             print 'BOT:', built_comment, '\n'
             
             break  # does not need to go through any more of the comments in the submission
