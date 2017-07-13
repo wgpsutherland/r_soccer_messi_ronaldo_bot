@@ -1,5 +1,7 @@
 from datetime import datetime
 import praw
+import prawcore.exceptions
+import time
 
 def build_comment_url_from_comment(comment):
     return 'https://www.reddit.com/comments/' + comment.link_id.replace('t3_', '') + '/_/' + comment.id
@@ -71,29 +73,50 @@ def do_bot_stuff(comment, bot, comment_subject):
             break  # does not need to go through any more of the comments in the submission
 
 
-r_messi = praw.Reddit('messiBot')
-r_ronaldo = praw.Reddit('ronaldoBot')
+def main_logic():
 
-subreddit = r_messi.subreddit('soccer')
+    r_messi = praw.Reddit('messiBot')
+    r_ronaldo = praw.Reddit('ronaldoBot')
 
-for comment in subreddit.stream.comments():
+    subreddit = r_messi.subreddit('soccer')
 
-    title = comment.link_title.lower()
-    body = comment.body.lower()
+    for comment in subreddit.stream.comments():
 
-    if 'ronaldo' in title and 'messi' in title:
-        continue
+        title = comment.link_title.lower()
+        body = comment.body.lower()
 
-    r_t_m_b = 'ronaldo' in title and 'messi' in body
-    m_t_r_b = 'messi' in title and 'ronaldo' in body
-
-    if r_t_m_b or m_t_r_b:
-        examined_submissions = set(open("commented.txt").read().splitlines())
-        if comment.link_id in examined_submissions:
+        if 'ronaldo' in title and 'messi' in title:
             continue
 
-    if r_t_m_b:
-        do_bot_stuff(comment, r_messi, 'messi')
+        r_t_m_b = 'ronaldo' in title and 'messi' in body
+        m_t_r_b = 'messi' in title and 'ronaldo' in body
 
-    if m_t_r_b:
-        do_bot_stuff(comment, r_ronaldo, 'ronaldo')
+        if r_t_m_b or m_t_r_b:
+            examined_submissions = set(open("commented.txt").read().splitlines())
+            if comment.link_id in examined_submissions:
+                continue
+
+        if r_t_m_b:
+            do_bot_stuff(comment, r_messi, 'messi')
+
+        if m_t_r_b:
+            do_bot_stuff(comment, r_ronaldo, 'ronaldo')
+
+
+def run():
+
+    running = True
+    while running:
+
+        try:
+            main_logic()
+
+        except KeyboardInterrupt:
+            print 'KeyboardInterrupt received. Exiting.'
+            running = False
+
+        except prawcore.exceptions.RequestException:
+            print 'Request Exception. Trying again in 30 seconds.'
+            time.sleep(30)
+
+run()
