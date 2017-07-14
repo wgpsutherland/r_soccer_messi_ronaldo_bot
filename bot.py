@@ -119,4 +119,8 @@ def run():
             print 'Request Exception. Trying again in 30 seconds.'
             time.sleep(30)
 
+        except prawcore.exceptions.ServerError:
+            print 'Server Error. Trying again in 2 minutes.'
+            time.sleep(120)
+
 run()
