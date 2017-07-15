@@ -3,6 +3,18 @@ import praw
 import prawcore.exceptions
 import time
 
+def write_info_to_file(link_id, comment_subject, time_dif):
+    # add the submission id to the file so the bot does not post to it again
+    with open("commented.txt", "a") as myfile:
+        myfile.write(link_id + ' ' + comment_subject + '_bot ' + ':'.join(str(i) for i in time_dif) + '\n')
+
+
+def get_examined_submissions():
+    lines = open("commented.txt").read().splitlines()
+    subs = [x.split(' ')[0] for x in lines]
+    return set(subs)
+
+
 def build_comment_url_from_comment(comment):
     return 'https://www.reddit.com/comments/' + comment.link_id.replace('t3_', '') + '/_/' + comment.id
 
@@ -51,12 +63,10 @@ def do_bot_stuff(comment, bot, comment_subject):
 
         if comment_subject in x.body.lower():
 
-            # add the submission id to the file so the bot does not post to it again
-            with open("commented.txt", "a") as myfile:
-                myfile.write(comment.link_id + '\n')
-
             time_difference = datetime.utcfromtimestamp(x.created_utc) - datetime.utcfromtimestamp(submission.created_utc)
             time_difference_parsed = days_hours_minutes_seconds(time_difference)
+
+            write_info_to_file(comment.link_id, comment_subject, time_difference_parsed)
 
             if comment_subject == 'messi':
                 built_comment = build_reddit_comment('Cristiano Ronaldo', 'Lionel Messi', time_difference_parsed, x)
@@ -92,7 +102,7 @@ def main_logic():
         m_t_r_b = 'messi' in title and 'ronaldo' in body
 
         if r_t_m_b or m_t_r_b:
-            examined_submissions = set(open("commented.txt").read().splitlines())
+            examined_submissions = get_examined_submissions()
             if comment.link_id in examined_submissions:
                 continue
 
