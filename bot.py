@@ -83,7 +83,14 @@ def do_bot_stuff(comment, bot, comment_subject):
             break  # does not need to go through any more of the comments in the submission
 
 
+def in_x(txt, lst):
+    return any([x in txt for x in lst])
+
+
 def main_logic():
+
+    messi_names = ['messi']
+    ronaldo_names = ['ronaldo', 'cr7']
 
     r_messi = praw.Reddit('messiBot')
     r_ronaldo = praw.Reddit('ronaldoBot')
@@ -95,11 +102,11 @@ def main_logic():
         title = comment.link_title.lower()
         body = comment.body.lower()
 
-        if 'ronaldo' in title and 'messi' in title:
+        if in_x(title, ronaldo_names) and in_x(title, messi_names):
             continue
 
-        r_t_m_b = 'ronaldo' in title and 'messi' in body
-        m_t_r_b = 'messi' in title and 'ronaldo' in body
+        r_t_m_b = in_x(title, ronaldo_names) and in_x(body, messi_names)
+        m_t_r_b = in_x(title, messi_names) and in_x(body, ronaldo_names)
 
         if r_t_m_b or m_t_r_b:
             examined_submissions = get_examined_submissions()
